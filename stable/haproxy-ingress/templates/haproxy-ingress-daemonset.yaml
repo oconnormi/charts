@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    run: {{ .Values.haproxy.fullname }}
+  name: {{ .Values.haproxy.fullname }}
+  namespace: {{ .Values.haproxy.namespace }}
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      run: {{ .Values.haproxy.fullname }}
+  template:
+    metadata:
+      labels:
+        run: {{ .Values.haproxy.fullname }}
+    spec:
+      nodeSelector:
+        role: {{ .Values.haproxy.name }}
+      serviceAccountName: {{ .Values.haproxy.name }}
+      containers:
+      - name: {{ .Values.haproxy.fullname }}
+        image: {{ .Values.haproxy.image }}
+        args:
+        - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultbackend.name }}
+        - --configmap=$(POD_NAMESPACE)/{{ .Values.haproxy.fullname }}
+        - --sort-backends
+        ports:
+        - name: http
+          containerPort: {{ .Values.haproxy.ports.http }}
+        - name: https
+          containerPort: {{ .Values.haproxy.ports.https }}
+        - name: stat
+          containerPort: {{ .Values.haproxy.ports.stat }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

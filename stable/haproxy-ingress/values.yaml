@@ -1,0 +1,16 @@
+haproxy:
+  fullname: haproxy-ingress
+  name: ingress-controller
+  namespace: ingress-controller
+  image: quay.io/jcmoraisjr/haproxy-ingress
+  ports:
+    http: 80
+    https: 443
+    stat: 1936
+
+defaultbackend:
+  name: ingress-default-backend
+  image: gcr.io/google_containers/defaultbackend:1.0
+  port: 8080
+  cpu: 10m
+  memory: 10Mi

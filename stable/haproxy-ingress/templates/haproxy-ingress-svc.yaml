@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.haproxy.fullname }}
+  namespace: {{ .Values.haproxy.namespace }}
+spec:
+  type: LoadBalancer
+  ports:
+  - port: {{ .Values.haproxy.ports.http }}
+    targetPort: {{ .Values.haproxy.ports.http }}
+    protocol: TCP
+    name: ingress-http
+  - port: {{ .Values.haproxy.ports.https }}
+    targetPort: {{ .Values.haproxy.ports.https }}
+    protocol: TCP
+    name: ingress-https
+  - port: {{ .Values.haproxy.ports.stat }}
+    targetPort: {{ .Values.haproxy.ports.stat }}
+    name: ingress-stat
+  selector:
+    run: {{ .Values.haproxy.fullname }}

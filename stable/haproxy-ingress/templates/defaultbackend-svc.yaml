@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.defaultbackend.name }}
+  namespace: {{ .Values.haproxy.namespace }}
+spec:
+  ports:
+  - port: {{ .Values.defaultbackend.port }}
+  selector:
+    run: {{ .Values.defaultbackend.name }}

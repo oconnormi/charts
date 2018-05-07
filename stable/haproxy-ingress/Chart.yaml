@@ -1,0 +1,13 @@
+name: haproxy-ingress
+version: 0.1.0
+appVersion: v0.5-beta.3
+description: Ingress Controller using HAProxy
+keywords:
+  - ingress
+  - haproxy
+home: https://github.com/jcmoraisjr/haproxy-ingress
+sources:
+  - https://github.com/jcmoraisjr/haproxy-ingress
+maintainers:
+  - name: Michael O'Connor
+    email: oconnor.michael.stephen@gmail.com

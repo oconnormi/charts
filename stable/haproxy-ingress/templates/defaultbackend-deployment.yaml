@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: "{{ .Values.defaultbackend.name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: "{{ .Values.haproxy.name }}"
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    run: {{ .Values.defaultbackend.name }}
+  name: {{ .Values.defaultbackend.name }}
+  namespace: {{ .Values.haproxy.namespace }}
+spec:
+  selector:
+    matchLabels:
+      run: {{ .Values.defaultbackend.name }}
+  template:
+    metadata:
+      labels:
+        run: {{ .Values.defaultbackend.name }}
+    spec:
+      containers:
+      - name: {{ .Values.defaultbackend.name }}
+        image: {{ .Values.defaultbackend.image }}
+        ports:
+        - containerPort: {{ .Values.defaultbackend.port }}
+        resources:
+          limits:
+            cpu: {{ .Values.defaultbackend.cpu }}
+            memory: {{ .Values.defaultbackend.memory }}
